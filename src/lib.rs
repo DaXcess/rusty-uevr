@@ -28,14 +28,16 @@ pub unsafe fn uevr_plugin_initialize(param: *const UEVR_PluginInitializeParam) -
 
     api::API::initialize(param);
 
-    if let Err(why) = std::panic::catch_unwind(|| {
+    if let Err(error) = std::panic::catch_unwind(|| {
         let plugin = plugin::_GLOBAL_PLUGIN
             .as_ref()
             .expect("No plugin has been registered");
 
         plugin.on_initialize();
     }) {
-        error!("Plugin initialization failed: {why:?}");
+        if let Some(error) = error.downcast_ref::<&str>() {
+            error!("Plugin initialization failed: {error}");
+        }
 
         return false;
     }
