@@ -696,15 +696,14 @@ impl UClass {
 
         let size = unsafe { fun(self.to_handle(), null_mut(), 0, allow_default) };
         if size == 0 {
-            warn!("get_objects_matching_raw returned size: 0");
-
             return vec![];
         }
 
-        info!("get_objects_matching_raw returned size: {size}");
+        let mut result = Vec::with_capacity(size as _);
 
-        let mut result = Vec::with_capacity(size as usize);
         unsafe {
+            result.set_len(size as _);
+
             fun(
                 self.to_handle(),
                 result.as_mut_ptr(),
