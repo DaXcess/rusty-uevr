@@ -37,6 +37,10 @@ pub unsafe fn uevr_plugin_initialize(param: *const UEVR_PluginInitializeParam) -
     }) {
         if let Some(error) = error.downcast_ref::<&str>() {
             error!("Plugin initialization failed: {error}");
+        } else if let Some(error) = error.downcast_ref::<String>() {
+            error!("Plugin initialization failed: {error}");
+        } else {
+            error!("Plugin initialization failed: (unknown)");
         }
 
         return false;

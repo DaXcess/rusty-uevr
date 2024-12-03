@@ -469,12 +469,12 @@ impl FName {
             return "".to_string();
         }
 
-        let mut ptr = vec![0u16; size as usize];
+        let mut ptr = vec![0u16; size as usize + 1];
         unsafe {
-            fun(self.to_handle(), ptr.as_mut_ptr(), size);
+            fun(self.to_handle(), ptr.as_mut_ptr(), size + 1);
         }
 
-        String::from_utf16(&ptr).unwrap()
+        String::from_utf16(&ptr[0..ptr.len() - 1]).unwrap()
     }
 }
 
