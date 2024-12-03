@@ -471,7 +471,7 @@ impl FName {
 
         let mut ptr = vec![0u16; size as usize];
         unsafe {
-            fun(self.to_handle(), ptr.as_mut_ptr(), size + 1);
+            fun(self.to_handle(), ptr.as_mut_ptr(), size);
         }
 
         String::from_utf16(&ptr).unwrap()
